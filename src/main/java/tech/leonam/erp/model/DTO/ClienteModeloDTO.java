@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClienteModeloDTO {
-
     private boolean isCPF;
     private String nome;
     private String cpfOrCnpj;

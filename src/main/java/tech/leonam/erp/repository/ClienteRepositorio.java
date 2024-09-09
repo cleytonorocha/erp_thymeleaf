@@ -1,78 +1,59 @@
 package tech.leonam.erp.repository;
 
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
+import java.util.Optional;
+
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
-import tech.leonam.erp.exceptions.ClienteNaoDeletado;
-import tech.leonam.erp.exceptions.ClienteNaoFoiSalvo;
+import tech.leonam.erp.exceptions.ClienteNaoExiste;
 import tech.leonam.erp.model.DTO.ClienteModeloDTO;
 import tech.leonam.erp.model.entity.ClienteModelo;
-
+import tech.leonam.erp.query.ClientQuery;
 
 @Repository
 @AllArgsConstructor
 public class ClienteRepositorio {
 
-    private static final String SELECT_BY_ID = "select * from clientes where id = ?";
-    private static final String INSERT_INTO = "INSERT INTO clientes (is_cpf, nome, cpf_or_cnpj, numero_contato, cep, endereco, bairro, cidade, uf, numero_casa) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String DELETE_BY_ID = "delete from clientes where id = ?";
-    private static final String EXISTS_ID = "select 1 from clientes where cpf_or_cnpj = ? limit 1";
+    private final JdbcClient jdbcClient;
 
-    private JdbcTemplate jdbcTemplate;
-
-    public ClienteModelo procuraClientePorId(int id) throws EmptyResultDataAccessException {
-        var linha = jdbcTemplate.queryForMap(SELECT_BY_ID, id);
-
-        ClienteModelo cliente = new ClienteModelo();
-        cliente.setId((Integer) linha.get("id"));
-        cliente.setCPF((Boolean) linha.get("is_cpf"));
-        cliente.setNome((String) linha.get("nome"));
-        cliente.setCpfOrCnpj((String) linha.get("cpf_or_cnpj"));
-        cliente.setNumeroContato((String) linha.get("numero_contato"));
-        cliente.setCep((String) linha.get("cep"));
-        cliente.setEndereco((String) linha.get("endereco"));
-        cliente.setBairro((String) linha.get("bairro"));
-        cliente.setCidade((String) linha.get("cidade"));
-        cliente.setUf((String) linha.get("uf"));
-        cliente.setNumeroCasa((Integer) linha.get("numero_casa"));
-
-        return cliente;
+    public Optional<ClienteModelo> buscarPorID(int id) throws ClienteNaoExiste {
+        return jdbcClient.sql(ClientQuery.SELECT_BY_ID)
+                .param("id", id)
+                .query(ClienteModelo.class)
+                .optional();
     }
 
-    public void salvaCliente(ClienteModeloDTO dto) throws ClienteNaoFoiSalvo {
-        var linha = jdbcTemplate.update(INSERT_INTO, dto.isCPF(),
-                dto.getNome(),
-                dto.getCpfOrCnpj(),
-                dto.getNumeroContato(),
-                dto.getCep(),
-                dto.getEndereco(),
-                dto.getBairro(),
-                dto.getCidade(),
-                dto.getUf(),
-                dto.getNumeroCasa());
-
-        if (linha < 0) throw new ClienteNaoFoiSalvo("Não foi possível salvar o cliente.");
+    @Transactional
+    public int salvaCliente(ClienteModeloDTO dto) {
+        return jdbcClient.sql(ClientQuery.INSERT_INTO)
+                .param("isCPF", dto.isCPF())
+                .param("nome", dto.getNome())
+                .param("cpfOrCnpj", dto.getCpfOrCnpj())
+                .param("numeroContato", dto.getNumeroContato())
+                .param("cep", dto.getCep())
+                .param("endereco", dto.getEndereco())
+                .param("bairro", dto.getBairro())
+                .param("cidade", dto.getCidade())
+                .param("uf", dto.getUf())
+                .param("numeroCasa", dto.getNumeroCasa())
+                .update();
     }
 
-    public void deletaPorID(int id) throws ClienteNaoDeletado {
-        var linha = jdbcTemplate.update(DELETE_BY_ID, id);
-
-        if (linha < 0) throw new ClienteNaoDeletado("Não foi possível deletar o cliente.");
-
+    @Transactional
+    public Integer deletaPorID(int id) {
+        return jdbcClient.sql(ClientQuery.DELETE_BY_ID)
+                .param("id", id)
+                .update();
     }
 
-    public boolean existeID(String cpf) {
-        Integer result = null;
-        try {
-            result = jdbcTemplate.queryForObject(EXISTS_ID, new Object[]{cpf}, Integer.class);
-        } catch (EmptyResultDataAccessException ignored) {
-            // Nenhum resultado foi encontrado, result permanecerá como null
-            // Essa atrocidade foi feita pq bugava quando não tinha
-        }
-        return result != null;
+    public Integer cpfExiste(String cpf) {
+        return jdbcClient.sql(ClientQuery.EXISTS_ID)
+                .param("cpf_or_cnpj", cpf)
+                .query(Integer.class)
+                .optional()
+                .orElseGet(() -> 0);
     }
 
 }
