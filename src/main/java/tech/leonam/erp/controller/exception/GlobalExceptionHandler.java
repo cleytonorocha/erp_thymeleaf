@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import tech.leonam.erp.exceptions.DataPagamentoPrevistoException;
 import tech.leonam.erp.exceptions.IdentificadorInvalidoException;
@@ -34,7 +35,6 @@ public class GlobalExceptionHandler {
                 .descricao("Error: " + HttpStatus.BAD_REQUEST)
                 .error(Arrays.asList(ex.getMessage()))
                 .build();
-
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -43,6 +43,15 @@ public class GlobalExceptionHandler {
         return ApiError.builder()
                 .descricao("Error: " + HttpStatus.BAD_REQUEST)
                 .error(Arrays.asList(ex.getMessage()))
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ApiError handlerMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
+        return ApiError.builder()
+                .descricao("Error: " + HttpStatus.BAD_REQUEST)
+                .error(Arrays.asList("Máximo tamanho de imagem passado"))
                 .build();
 
     }

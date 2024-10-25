@@ -2,11 +2,14 @@ package tech.leonam.erp.config;
 
 import java.math.BigDecimal;
 import java.security.SecureRandom;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +18,17 @@ import org.springframework.context.annotation.Profile;
 import com.github.javafaker.Faker;
 
 import lombok.AllArgsConstructor;
+import tech.leonam.erp.model.entity.Categoria;
 import tech.leonam.erp.model.entity.Cliente;
+import tech.leonam.erp.model.entity.Estoque;
 import tech.leonam.erp.model.entity.Servico;
 import tech.leonam.erp.model.entity.TipoPagamento;
 import tech.leonam.erp.model.enums.StatusServico;
 import tech.leonam.erp.model.enums.StatusTipoPagamento;
 import tech.leonam.erp.model.enums.UF;
+import tech.leonam.erp.repository.CategoriaRepository;
 import tech.leonam.erp.repository.ClienteRepository;
+import tech.leonam.erp.repository.EstoqueRepository;
 import tech.leonam.erp.repository.ServicoRepository;
 import tech.leonam.erp.repository.TipoPagamentoRepository;
 import tech.leonam.erp.util.DocumentoGerador;
@@ -34,30 +41,28 @@ public class DbMockConfig {
     private final ClienteRepository clienteRepository;
     private final TipoPagamentoRepository tipoPagamentoRepository;
     private final ServicoRepository servicoRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final EstoqueRepository estoqueRepository;
     private final Faker faker;
     private static final List<String> BAIRROS = Arrays.asList(
             "Jardim Paulista", "Vila Madalena", "Centro", "Moema", "Pinheiros",
             "Brooklin", "Santana", "Aclimação", "Vila Mariana", "Itaim Bibi");
     private final Integer quantidade = 500;
-    
-    @Bean
-    public String saveAllCliente() {
-        var fakes = geradorDeClienteFake();
-        clienteRepository.saveAll(fakes);
-        return null;
-    }
 
     @Bean
-    public String saveAllTipoPagamento() {
-        var fakes = geradorDeTipoPagamentoFake();
-        tipoPagamentoRepository.saveAll(fakes);
-        return null;
-    }
+    public String saveMock() {
+        List<Cliente> fakeClientes = geradorDeClienteFake();
+        List<Servico> fakeServico = geradorDeServicoFake();
+        List<TipoPagamento> fakeTipoPagamento = geradorDeTipoPagamentoFake();
+        List<Estoque> fakeEstoques = geradorDeEstoquesFake();
+        List<Categoria> fakeCategoria = geradorDeCategoriaFake();
 
-    @Bean
-    public String saveAllServico() {
-        List<Servico> fakes = geradorDeServicoFake();
-        servicoRepository.saveAll(fakes);
+        clienteRepository.saveAll(fakeClientes);
+        tipoPagamentoRepository.saveAll(fakeTipoPagamento);
+        servicoRepository.saveAll(fakeServico);
+        categoriaRepository.saveAll(fakeCategoria);
+        estoqueRepository.saveAll(fakeEstoques);
+
         return null;
     }
 
@@ -92,7 +97,6 @@ public class DbMockConfig {
         return clientes;
     }
 
-    
     private List<Servico> geradorDeServicoFake() {
         List<Servico> servicos = new ArrayList<>();
         SecureRandom random = new SecureRandom();
@@ -103,10 +107,9 @@ public class DbMockConfig {
             servico.setNome(faker.commerce().productName());
             servico.setPreco(BigDecimal.valueOf(faker.number().randomDouble(2, 50, 500)));
             servico.setCliente(
-                Cliente.builder()
-                .id(longSobreQuatidade())
-                .build()
-            );
+                    Cliente.builder()
+                            .id(longSobreQuatidade())
+                            .build());
             servico.setDescricao(faker.lorem().sentence());
             servico.setTipoPagamento(
                     TipoPagamento.builder()
@@ -144,8 +147,74 @@ public class DbMockConfig {
         return tiposPagamento;
     }
 
+    private List<Estoque> geradorDeEstoquesFake() {
+        List<Estoque> estoques = new ArrayList<>();
+        SecureRandom random = new SecureRandom();
 
-    private Long longSobreQuatidade(){
+        for (var i = 0; i < quantidade; i++) {
+            Estoque estoque = new Estoque();
+
+            estoque.setNome(faker.commerce().productName());
+            estoque.setPrecoUnitario(
+                    BigDecimal.valueOf(
+                            faker.number()
+                                    .randomDouble(2, 1, 100)));
+            estoque.setQuantidade(faker.number().randomNumber());
+
+            estoque.setValidade(
+                    LocalDate.now()
+                            .plusYears(
+                                    faker.number()
+                                            .numberBetween(1, 100)));
+
+            estoque.setDataDaCompra(
+                    LocalDateTime.ofInstant(
+                            Instant.ofEpochMilli(
+                                    faker.date()
+                                            .future(2080, TimeUnit.DAYS)
+                                            .getTime()),
+                            ZoneOffset.UTC));
+
+            estoque.setCategoria(
+                    Categoria.builder()
+                            .id(longSobreQuatidade())
+                            .build());
+
+            estoque.setPathImagem("img/db/estoque/sample.jpg");
+            estoque.setCriadoPor(faker.name().fullName());
+            estoque.setModificadoPor(faker.name().fullName());
+            estoque.setDataCriacao(LocalDateTime.now().minusDays(random.nextInt(0, 365)));
+            estoque.setDataModificacao(LocalDateTime.now().minusDays(random.nextInt(0, 365)));
+
+            estoques.add(estoque);
+        }
+
+        return estoques;
+    }
+
+    private List<Categoria> geradorDeCategoriaFake() {
+        List<Categoria> tipoCategorias = new ArrayList<>();
+        SecureRandom random = new SecureRandom();
+
+        for (var i = 0; i < quantidade; i++) {
+            Categoria categoria = new Categoria();
+
+            categoria.setNome(faker.commerce().material());
+            categoria.setDescricao(faker.lorem().characters(0, 200));
+            categoria.setAtivo(Boolean.valueOf(faker.bool().bool()));
+
+            categoria.setCriadoPor(faker.name().fullName());
+            categoria.setModificadoPor(faker.name().fullName());
+            categoria.setDataCriacao(LocalDateTime.now().minusDays(random.nextInt(0, 365)));
+            categoria.setDataModificacao(LocalDateTime.now().minusDays(random.nextInt(0, 365)));
+
+            tipoCategorias.add(categoria);
+        }
+
+        return tipoCategorias;
+    }
+
+    private Long longSobreQuatidade() {
         return faker.number().numberBetween(1l, quantidade);
     }
 
