@@ -1,29 +1,14 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    document.getElementById('clientForm').addEventListener('submit', async function (event) {
+    document.getElementById('estoqueForm').addEventListener('submit', async function (event) {
         event.preventDefault()
-
-        const nome = document.querySelector('#nome').value.trim()
-        const cpfOrCnpj = document.querySelector('#cpf-or-cnpj').value.trim()
-        const numeroContato = document.querySelector('#numero').value.trim()
-        const cep = document.querySelector('#cep').value.trim()
-        const endereco = document.querySelector('#rua').value.trim()
-        const bairro = document.querySelector('#bairro').value.trim()
-        const cidade = document.querySelector('#cidade').value.trim()
-        const uf = document.getElementById('estado').value
-        const numeroCasa = parseInt(document.querySelector('#numero-endereco').value.trim(), 10) || 0
-
-        const identificacao = cpfOrCnpj.replace(/\D/g, '')
-
-        const formData  = { nome, identificacao, numeroContato, cep, endereco, bairro, cidade, uf, numeroCasa };
-        const api = '/api/cliente'
+        const formData = new FormData(this)
+        const api = '/api/estoque'
         const metodo = 'POST'
 
         try {
-
             const response = await fetch(api, {
                 method: metodo,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: formData
             })
 
             if (response.ok || response.status === 201) {
@@ -39,10 +24,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                     if (errorData && typeof errorData === 'object') {
                         const errorMessages = Object.values(errorData)
                         if (errorMessages.length > 0) {
-                            errorMessage = errorMessages[0]
+                            errorMessage = errorMessages[1]
                         }
                     }
-
                 } catch (jsonError) {
                     errorMessage = await response.text()
                 }
@@ -50,8 +34,34 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert(`Erro ao enviar o formulário: ${errorMessage}`)
             }
         } catch (error) {
-            console.error('Erro na requisição:', error)
             alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.')
         }
     })
 })
+
+
+function previewImagem(event) {
+    const imagem = event.target.files[0];
+    const preview = document.getElementById('imagemPreview');
+
+    if (imagem) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(imagem);
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+    }
+}
+
+function limparPreview() {
+    const preview = document.getElementById('imagemPreview');
+    const inputImagem = document.getElementById('imagem');
+
+    preview.src = '';
+    preview.style.display = 'none';
+    inputImagem.value = '';
+}

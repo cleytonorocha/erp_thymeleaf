@@ -12,7 +12,7 @@
                 </a>
                 <ul class="collapse in show flex-column ms-1 fs-5" id="subMenuCliente" data-bs-parent="#menuCliente">
                     <li><a th:href="@{/cadastro_clientes}" class="nav-link px-0 text-white">Cadastro</a></li>
-                    <li><a th:href="@{/listar_clientes?pagina=1}" class="nav-link px-0 text-white">Listar</a></li>
+                    <li><a th:href="@{/listar_clientes?pagina=1}" class="nav-link px-0 text-white">Lista</a></li>
                 </ul>
             </li>
             <li class="col-lg-12 col">
@@ -28,6 +28,16 @@
                     </li>
                     <li><a th:href="@{/servicos_cancelados?pagina=1}" class="nav-link px-0 text-white">Cancelados</a>
                     </li>
+                </ul>
+            </li>
+            <li class="col-lg-12 col">
+                <a href="#subMenuEstoque" data-bs-toggle="collapse" class="nav-link px-0 text-white fs-3 fw-medium">
+                    <i class="fs-4 bi-briefcase"></i>
+                    <span class="ms-1">Estoque</span>
+                </a>
+                <ul class="collapse in show flex-column ms-1 fs-5" id="subMenuEstoque" data-bs-parent="#menuEstoque">
+                    <li><a th:href="@{/cadastro_estoque}" class="nav-link px-0 text-white">Cadastro</a></li>
+                    <li><a th:href="@{/listar_estoque?pagina=1}" class="nav-link px-0 text-white">Lista</a></li>
                 </ul>
             </li>
         </ul>

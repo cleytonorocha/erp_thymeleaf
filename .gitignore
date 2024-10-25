@@ -2,3 +2,4 @@ target/
 .env
 .vscode/
 erp.md
+src/main/resources/static/img/db

@@ -20,6 +20,7 @@ import tech.leonam.erp.model.entity.Cliente;
 import tech.leonam.erp.model.entity.Servico;
 import tech.leonam.erp.model.enums.StatusServico;
 import tech.leonam.erp.model.enums.UF;
+import tech.leonam.erp.repository.CategoriaRepository;
 import tech.leonam.erp.service.ClienteService;
 import tech.leonam.erp.service.ServicoService;
 import tech.leonam.erp.service.TipoPagamentoService;
@@ -31,6 +32,7 @@ public class ControleView {
     private final ClienteService clienteService;
     private final ServicoService servicoService;
     private final TipoPagamentoService tipoPagamentoService;
+    private final CategoriaRepository categoriaRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -189,6 +191,34 @@ public class ControleView {
         model.addAttribute("tipoPagamentos", tipoPagamentoService.buscarTodosNomesDosTiposDePagamentos());
         model.addAttribute("statusLista", StatusServico.values());
         return "/servicos/visualizar_servico";
+    }
+
+    @GetMapping("/cadastro_estoque")
+    public String cadastro_estoque(Model model) {
+        model.addAttribute("categorias", categoriaRepository.findAllNomesCategoria()
+                .stream()
+                .distinct()
+                .toArray());
+        return "/estoque/cadastro_estoque";
+    }
+
+    @GetMapping("/listar_estoque")
+    public String listar_estoque(Model model, @PathVariable @RequestParam(defaultValue = "1") Integer pagina) {
+        var consulta = servicoService.buscarTodosServicos(pagina, 20, "id", "ASC", StatusServico.CONCLUIDO.getCodigo());
+
+        int paginaCorrente = consulta.getNumber();
+        int totalPages = consulta.getTotalPages();
+
+        int inicio = Math.max(1, paginaCorrente - 3);
+        int fim = Math.min(totalPages, paginaCorrente + 3);
+        List<Integer> paginas = IntStream.rangeClosed(inicio, fim).boxed().toList();
+
+        model.addAttribute("servicos", consulta.getContent());
+        model.addAttribute("paginaCorrente", paginaCorrente);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("paginas", paginas);
+
+        return "/estoque/listar_estoque";
     }
 
 }
