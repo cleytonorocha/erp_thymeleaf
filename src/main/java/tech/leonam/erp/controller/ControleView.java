@@ -67,6 +67,11 @@ public class ControleView {
         return "/clientes/atualizar_cliente";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "/security/login";
+    }
+
     @GetMapping("/listar_clientes")
     public String listar_clientes(Model model, @PathVariable @RequestParam(defaultValue = "1") Integer pagina) {
         var consulta = clienteService.buscarTodosOsClientes(pagina, 20, "id", "ASC");
