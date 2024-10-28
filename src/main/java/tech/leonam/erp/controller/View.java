@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.AllArgsConstructor;
+import tech.leonam.erp.controller.security.RegisterDTO;
 import tech.leonam.erp.exceptions.IdentificadorInvalidoException;
 import tech.leonam.erp.model.DTO.responseApi.ClienteNomesDTO;
 import tech.leonam.erp.model.entity.Cliente;
@@ -27,7 +28,7 @@ import tech.leonam.erp.service.TipoPagamentoService;
 
 @Controller
 @AllArgsConstructor
-public class ControleView {
+public class View {
 
     private final ClienteService clienteService;
     private final ServicoService servicoService;
@@ -65,6 +66,22 @@ public class ControleView {
         model.addAttribute("estados", UF.values());
         model.addAttribute("id", id);
         return "/clientes/atualizar_cliente";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "/security/login";
+    }
+
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("user", new RegisterDTO());
+        return "/security/register";
+    }
+
+    @GetMapping("/login/error")
+    public String error() {
+        return "/security/error";
     }
 
     @GetMapping("/listar_clientes")
