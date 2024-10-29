@@ -1,8 +1,8 @@
 package tech.leonam.erp.util;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -30,8 +30,8 @@ public class Gerador {
                                 .descricao("Consultoria especializada em soluções de tecnologia")
                                 .tipoPagamentoId(1l)
                                 .status(StatusServico.EM_ANDAMENTO)
-                                .pagamentoPrevisto(LocalDate.of(2024, 10, 15))
-                                .pagamentoFinal(LocalDate.of(2024, 10, 20))
+                                .pagamentoPrevisto(LocalDate.now().plusDays(5))
+                                .pagamentoFinal(LocalDate.now().plusDays(50))
                                 .modificadoPor("QUINZINHO BOLADÃO")
                                 .dataModificacao(null)
                                 .dataCriacao(null)
