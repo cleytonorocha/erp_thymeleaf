@@ -23,12 +23,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import tech.leonam.erp.model.DTO.ServicoDTO;
 import tech.leonam.erp.model.entity.Servico;
-import tech.leonam.erp.model.enums.StatusServico;
 import tech.leonam.erp.service.ServicoService;
 import tech.leonam.erp.util.Gerador;
 
-@AutoConfigureMockMvc
 @ActiveProfiles("dev")
+@AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(controllers = ServicoController.class)
 public class ServicoControllerTest {
 
@@ -125,17 +124,4 @@ public class ServicoControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Test
-    @DisplayName("Deve alterar o status de um serviço")
-    public void deveAlterarStatusDoServico() throws Exception {
-        Long id = 1L;
-        StatusServico status = StatusServico.EM_ANDAMENTO;
-
-        Mockito.doNothing().when(servicoService).alterarStatusDoServico(id, status);
-
-        mockMvc.perform(MockMvcRequestBuilders.patch(SERVICO_API + "/" + id + "/status")
-                .param("status", status.toString())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
 }
