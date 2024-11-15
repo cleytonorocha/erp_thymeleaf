@@ -118,7 +118,7 @@ public class View {
                 .map(Cliente::getNome)
                 .limit(3));
         model.addAttribute("dataClientesRecentes", consultaLista.stream()
-                .sorted(Comparator.comparing(Cliente::getCriadoPor))
+                .sorted(Comparator.comparing(Cliente::getDataCriacao).reversed())
                 .map(Cliente::getDataCriacao)
                 .limit(3))
 

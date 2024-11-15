@@ -89,7 +89,7 @@ public class DbMockConfig {
 
             cliente.setCriadoPor(faker.name().nameWithMiddle());
             cliente.setModificadoPor(faker.name().nameWithMiddle());
-            cliente.setDataModificacao(LocalDateTime.now().minusDays(random.nextInt(0, 365)));
+            cliente.setDataModificacao(LocalDateTime.now().minusDays(random.nextInt(1, 365)));
 
             clientes.add(cliente);
         }
@@ -137,7 +137,7 @@ public class DbMockConfig {
             tipoPagamento.setAtivo(faker.bool().bool());
             tipoPagamento.setCriadoPor(faker.name().fullName());
             tipoPagamento.setModificadoPor(faker.name().fullName());
-            tipoPagamento.setDataCriacao(LocalDateTime.now().minusDays(random.nextInt(0, 365)));
+            tipoPagamento.setDataCriacao(LocalDateTime.now().minusMonths(random.nextInt(0, 365)));
             tipoPagamento.setDataModificacao(LocalDateTime.now().minusDays(random.nextInt(0, 365)));
 
             tiposPagamento.add(tipoPagamento);

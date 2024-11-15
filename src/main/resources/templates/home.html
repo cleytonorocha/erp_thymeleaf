@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Home - ERP de Limpeza de Estofados</title>
 
     <link href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="../static/css/sidebar.css" rel="stylesheet">
@@ -13,61 +13,52 @@
 </head>
 
 <body>
-    <div class="row ">
+    <div class="row">
         <div th:replace="~{sidebar}"></div>
         <section id="conteudo" class="col position-relative overflow-y-auto ms-3 me-2">
             <button type="button" onclick="sidebar()" class="btn sticky-top rounded-circle p-3" id="sidebar-button">
-                <i class="fa-solid fa-3x fa-bars"></i>
+                <i class="fas fa-bars fa-3x"></i>
             </button>
             <div class="container-fluid">
-                <!-- Conteúdo -->
-                <div class="row">
-                    <div class="col bg-light text-center" style="padding: 120px 0;">
-                        <div class="container">
-                            <h1 class="display-3">Bem-vindo à Nossa Página Inicial</h1>
-                            <p class="lead">Descubra mais sobre nossos serviços e ofertas.</p>
-                            <a href="#" class="btn btn-primary btn-lg">Saiba Mais</a>
-                        </div>
+                <div class="row bg-light text-center py-5 fade-in">
+                    <div class="col">
+                        <img src="../static/img/logo-menor.webp" alt="logo da empresa" class="img-fluid mb-4"
+                            style="max-height: 120px;">
+                        <h1 class="display-3">Bem-vindo ao ERP</h1>
                     </div>
-                    <div class="py-5">
-                        <div class="container">
-                            <div class="row d-flex">
-                                <div class="col-md-4 text-center">
-                                    <h2 class="display-5">Seção 1</h2>
-                                    <p class="lead">Texto introdutório sobre a primeira seção.</p>
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <h2 class="display-5">Seção 2</h2>
-                                    <p class="lead">Mais informações sobre a segunda seção.</p>
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <h2 class="display-5">Seção 3</h2>
-                                    <p class="lead">Breve descrição da terceira seção.</p>
+                </div>
+
+                <div class="container py-5">
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm border-light fade-in">
+                                <div class="card-body">
+                                    <i class="fas fa-calendar-check fa-3x text-primary icon mb-3"></i>
+                                    <h2 class="h4">Agendamento Fácil</h2>
+                                    <p class="lead text-muted">Gerencie horários e pedidos de limpeza de forma prática e
+                                        intuitiva.</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="bg-light text-center" style="padding: 120px 0;">
-                        <div class="container">
-                            <h1 class="display-3">Bem-vindo à Nossa Página Inicial</h1>
-                            <p class="lead">Descubra mais sobre nossos serviços e ofertas.</p>
-                            <a href="#" class="btn btn-primary btn-lg">Saiba Mais</a>
+
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm border-light fade-in">
+                                <div class="card-body">
+                                    <i class="fas fa-user-friends fa-3x text-primary icon mb-3"></i>
+                                    <h2 class="h4">Gestão de Clientes</h2>
+                                    <p class="lead text-muted">Mantenha um cadastro completo dos clientes e acesse o
+                                        histórico de serviços.</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="py-5">
-                        <div class="container">
-                            <div class="row d-flex">
-                                <div class="col-md-4 text-center">
-                                    <h2 class="display-5">Seção 1</h2>
-                                    <p class="lead">Texto introdutório sobre a primeira seção.</p>
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <h2 class="display-5">Seção 2</h2>
-                                    <p class="lead">Mais informações sobre a segunda seção.</p>
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <h2 class="display-5">Seção 3</h2>
-                                    <p class="lead">Breve descrição da terceira seção.</p>
+
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm border-light fade-in">
+                                <div class="card-body">
+                                    <i class="fas fa-boxes fa-3x text-primary icon mb-3"></i>
+                                    <h2 class="h4">Controle de Estoque</h2>
+                                    <p class="lead text-muted">Acompanhe o uso de produtos e mantenha o estoque
+                                        atualizado.</p>
                                 </div>
                             </div>
                         </div>

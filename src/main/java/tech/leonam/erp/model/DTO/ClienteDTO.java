@@ -27,6 +27,7 @@ public class ClienteDTO {
     @Size(min = 8, message = "CEP: Tamanho minimo é 8")
     private String cep;
 
+    @NotBlank(message = "Identificação não deve estar em branco")
     @CPF(groups = PessoaFisica.class, message = "CPF inválido")
     @CNPJ(groups = PessoaJuridica.class, message = "CNPJ inválido")
     private String identificacao;

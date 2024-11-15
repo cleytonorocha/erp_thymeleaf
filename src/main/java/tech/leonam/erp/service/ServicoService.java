@@ -1,15 +1,16 @@
 package tech.leonam.erp.service;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
-import java.util.List;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import tech.leonam.erp.exceptions.DataPagamentoPrevistoException;
 import tech.leonam.erp.exceptions.IdentificadorInvalidoException;
 import tech.leonam.erp.model.DTO.ServicoDTO;
@@ -23,7 +24,7 @@ import tech.leonam.erp.repository.ServicoRepository;
  * da entidade de Servico.
  */
 
-@Slf4j
+@Log4j2
 @Service
 @AllArgsConstructor
 public class ServicoService {

@@ -1,12 +1,19 @@
 package tech.leonam.erp.service;
 
+import static org.mockito.Mockito.*;
+
 import java.math.BigDecimal;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.transaction.Transactional;
@@ -30,15 +37,29 @@ public class ServicoServiceTest {
 
     @Autowired
     private TipoPagamentoRepository tipoPagamentoRepository;
-
+    
     @Autowired
     private ServicoService servicoService;
-
+    
+    @Mock
+    private Authentication authenticationMock;
+    
     private Long id = 1l;
+
+    @BeforeEach
+    public void setUp() {
+        authenticationMock = mock(Authentication.class);
+        when(authenticationMock.getName()).thenReturn("user");
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authenticationMock);
+        SecurityContextHolder.setContext(securityContext);
+    }
 
     @Test
     @DisplayName("Deve salvar um serviço")
-    public void deveSalvarServico() throws IdentificadorInvalidoException, ClienteNaoFoiSalvo, DataPagamentoPrevistoException {
+    public void deveSalvarServico()
+            throws IdentificadorInvalidoException, ClienteNaoFoiSalvo, DataPagamentoPrevistoException {
         ServicoDTO servicoDTO = Gerador.getServicoDTO();
 
         clienteRepository.salvarCliente(Gerador.getClienteDTO());
@@ -93,7 +114,7 @@ public class ServicoServiceTest {
 
     @Test
     @DisplayName("Deve atualizar um servico")
-    public void deveAtualiazarUmServico() throws IdentificadorInvalidoException{
+    public void deveAtualiazarUmServico() throws IdentificadorInvalidoException {
         ServicoDTO servicoEsperado = Gerador.getServicoDTO();
         servicoEsperado.setNome("teste");
         servicoEsperado.setPreco(new BigDecimal(0));
@@ -114,7 +135,8 @@ public class ServicoServiceTest {
 
     @Test
     @DisplayName("Deve atualizar os status de um servio")
-    public void deveAtualiazarOsStatusDeUmServico() throws IdentificadorInvalidoException, DataPagamentoPrevistoException{
+    public void deveAtualiazarOsStatusDeUmServico()
+            throws IdentificadorInvalidoException, DataPagamentoPrevistoException {
         ServicoDTO servicoDTO = Gerador.getServicoDTO();
 
         servicoDTO.setStatus(StatusServico.EM_ANDAMENTO);

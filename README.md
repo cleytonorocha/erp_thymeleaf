@@ -2,6 +2,8 @@
 
 Este é um sistema de ERP (Enterprise Resource Planning) desenvolvido para gerenciar as operações de uma empresa de limpeza de estofados. Originalmente criado para atender às necessidades específicas de uma empresa, agora está disponível como um projeto open source, permitindo que outros utilizem, contribuam e adaptem o sistema conforme necessário para aprenderem mais sobre thymeleaf.
 
+<img src="./src/main/resources/static/apresentacao.gif">
+
 ## Visão Geral do Projeto
 
 O objetivo deste projeto é fornecer uma solução completa para empresas de limpeza de estofados, facilitando o gerenciamento de estoque, agendamento de serviços e análise de desempenho. O sistema busca otimizar processos, reduzir custos operacionais e melhorar a satisfação do cliente.
@@ -18,14 +20,8 @@ O objetivo deste projeto é fornecer uma solução completa para empresas de lim
 
 - **Cadastro de Clientes**: Permite registrar informações dos clientes, incluindo contato e histórico de serviços.
 - **Agendamento de Serviços**: Facilita a programação de serviços de limpeza, permitindo a escolha de data e hora.
-- **Notificações**: Envio de lembretes automáticos para clientes sobre serviços agendados.
 
-### 3. Relatórios
-
-- **Relatórios de Serviços**: Geração de relatórios detalhados sobre serviços realizados, incluindo receitas, tipos de serviço e feedback dos clientes.
-- **Análise de Desempenho**: Ferramentas de análise para monitorar o desempenho da empresa, ajudando na tomada de decisões estratégicas.
-
-### 4. Interface Amigável
+### 3. Interface Amigável
 
 - **Design Responsivo**: O sistema é otimizado para uso em dispositivos móveis e desktops, garantindo uma experiência de usuário consistente.
 - **Navegação Intuitiva**: Menus e funcionalidades são organizados de maneira lógica, facilitando a navegação e o uso do sistema.

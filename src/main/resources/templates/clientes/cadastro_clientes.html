@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>Cadastro Clientes</title>
 
-    <link href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/sidebar.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../../static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/css/sidebar.css" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="../static/img/logo-menor.webp">
 </head>
@@ -23,8 +23,17 @@
                 <!-- Conteúdo -->
                 <form id="clientForm" class="shadow">
                     <div class="container d-flex flex-column justify-content-center" style="height: 90vh;">
+                        <div class="mt-5">
+                            <div id="liveAlertPlaceholder"></div>
+                        </div>
                         <div class=" d-flex justify-content-center mb-3">
                             <img src="../static/img/logo-menor.webp" width="150">
+                        </div>
+                        <div id="custom-alert" style="display: none;">
+                            <div class="alert-box">
+                                <p id="alert-message"></p>
+                                <button onclick="closeCustomAlert()">OK</button>
+                            </div>
                         </div>
                         <div class="container">
                             <div class="my-5">
@@ -113,9 +122,9 @@
             </div>
         </section>
     </div>
-    <script src="../static/js/sidebar.js"></script>
-    <script src="../static/js/bootstrap/bootstrap.bundle.min.js"></script>
-    <script src="../static/js/validacoes.js"></script>
+    <script src="../../static/js/sidebar.js"></script>
+    <script src="../../static/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="../../static/js/validacoes.js"></script>
     <script src="../../static/js/clientes/salvar-cliente.js"></script>
 
 </body>

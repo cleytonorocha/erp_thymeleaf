@@ -14,12 +14,24 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const identificacao = cpfOrCnpj.replace(/\D/g, '')
 
-        const formData  = { nome, identificacao, numeroContato, cep, endereco, bairro, cidade, uf, numeroCasa };
+        const formData = { nome, identificacao, numeroContato, cep, endereco, bairro, cidade, uf, numeroCasa };
         const api = '/api/cliente'
         const metodo = 'POST'
 
-        try {
+        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+        const appendAlert = (message, type) => {
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+                `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('')
 
+            alertPlaceholder.append(wrapper)
+        }
+
+        try {
             const response = await fetch(api, {
                 method: metodo,
                 headers: { 'Content-Type': 'application/json' },
@@ -28,13 +40,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             if (response.ok || response.status === 201) {
                 const data = await response.text()
-                console.log('Sucesso:', data)
-                alert('Formulário enviado com sucesso!')
+                appendAlert(data, 'success')
             } else {
                 let errorMessage = 'Erro desconhecido'
                 try {
                     const errorData = await response.json()
-                    console.log(errorData)
+                    for(let i in errorData.error){
+                        appendAlert(errorData.error[i], 'danger')
+                    }
 
                     if (errorData && typeof errorData === 'object') {
                         const errorMessages = Object.values(errorData)
@@ -44,14 +57,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                     }
 
                 } catch (jsonError) {
-                    errorMessage = await response.text()
+                    errorData = await response.text()
                 }
-
-                alert(`Erro ao enviar o formulário: ${errorMessage}`)
             }
         } catch (error) {
             console.error('Erro na requisição:', error)
-            alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.')
+            appendAlert(data, 'danger')
         }
     })
 })
+
+
