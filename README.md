@@ -1,12 +1,12 @@
-# ERP Open Source para Limpeza de Estofados
+# ERP Open Source para Papelarias
 
-Este é um sistema de ERP (Enterprise Resource Planning) desenvolvido para gerenciar as operações de uma empresa de limpeza de estofados. Originalmente criado para atender às necessidades específicas de uma empresa, agora está disponível como um projeto open source, permitindo que outros utilizem, contribuam e adaptem o sistema conforme necessário para aprenderem mais sobre thymeleaf.
+Este é um sistema de ERP (Enterprise Resource Planning) desenvolvido para gerenciar as operações de uma papelaria. Originalmente criado para atender às necessidades específicas de uma empresa, agora está disponível como um projeto open source, permitindo que outros utilizem, contribuam e adaptem o sistema conforme necessário para aprenderem mais sobre Thymeleaf.
 
 <img src="./src/main/resources/static/apresentacao.gif">
 
 ## Visão Geral do Projeto
 
-O objetivo deste projeto é fornecer uma solução completa para empresas de limpeza de estofados, facilitando o gerenciamento de estoque, agendamento de serviços e análise de desempenho. O sistema busca otimizar processos, reduzir custos operacionais e melhorar a satisfação do cliente.
+O objetivo deste projeto é fornecer uma solução completa para empresas de papelarias, facilitando o gerenciamento de estoque, agendamento de serviços e análise de desempenho. O sistema busca otimizar processos, reduzir custos operacionais e melhorar a satisfação do cliente.
 
 ## Funcionalidades Principais
 
